@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perpustakaan Khayalan | Pufutara Web</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+<style>
+body{
+  font-family:'Inter',sans-serif;
+  background:#fff;
+}
+
+/* NAVBAR */
+.navbar{
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,.85);
+}
+
+/* NAVBAR */
+.navbar{
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.85);
+  animation: navMuncul .8s ease forwards;
+  transform: translateY(-20px);
+  opacity: 0;
+}
+
+@keyframes navMuncul{
+  to{transform:translateY(0);opacity:1}
+}
+
+.navbar-collapse{
+  justify-content: center;
+}
+
+/* HEADER */
+.page-header{
+  text-align:center;
+  padding:70px 10px 40px;
+  opacity:0;
+  transform:translateY(-20px);
+  animation: fadeDown .8s ease forwards;
+}
+@keyframes fadeDown{
+  to{opacity:1;transform:translateY(0)}
+}
+.page-header h1{
+  font-family:'Poppins',sans-serif;
+  font-size:3rem;
+  font-weight:700;
+}
+.page-header p{color:#555}
+.page-header::after{
+  content:"";
+  display:block;
+  width:80px;
+  height:1px;
+  margin:24px auto 0;
+  background:linear-gradient(to right,transparent,#aaa,transparent);
+}
+
+/* GRID BUKU — FIX 5 KOLOM */
+.book-grid{
+  max-width:1200px;
+  margin:0 auto 120px;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:20px;
+}
+
+/* CARD */
+.book-card{
+  text-decoration:none;
+  color:#111;
+  background:#fff;
+  overflow:hidden;
+  border:1px solid #eee;
+  opacity:0;
+  transform:translateY(20px);
+  transition:.3s;
+}
+.book-card.muncul{
+  animation: fadeUp .8s ease forwards;
+}
+@keyframes fadeUp{
+  to{opacity:1;transform:translateY(0)}
+}
+.book-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 40px rgba(0,0,0,.08);
+}
+
+/* COVER — FIX 320px (FINAL) */
+.book-card img{
+  width:100%;
+  height:300px;
+  object-fit:cover;
+  transition:transform .4s ease;
+}
+.book-card:hover img{
+  transform:scale(1.05);
+}
+
+/* ISI */
+.book-content{
+  padding:16px;
+}
+.book-meta{
+  font-size:.75rem;
+  color:#888;
+  margin-bottom:6px;
+}
+.book-content h3{
+  font-family:'Poppins',sans-serif;
+  font-size:1.05rem;
+  margin-bottom:6px;
+}
+.book-content p{
+  font-size:.9rem;
+  color:#555;
+  line-height:1.5;
+}
+
+/* FOOTER */
+.page-footer{
+  text-align:center;
+  margin-bottom:80px;
+  font-size:.9rem;
+}
+.page-footer a{
+  color:#000;
+  text-decoration:none;
+}
+.page-footer a:hover{text-decoration:underline}
+
+/* RESPONSIVE */
+@media(max-width:992px){
+  .book-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:576px){
+  .book-grid{grid-template-columns:repeat(2,1fr)}
+  .page-header h1{font-size:2.2rem}
+  .book-card img{height:260px}
+}
+</style>
+
+</style>
+</head>
+
+<body>
+<audio src="audio/notif.wav" autoplay ></audio>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container-fluid">
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+
+        <li class="nav-item"><a class="nav-link active" href="beranda.html">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="perpus.html">Perpustakaan khayalan</a></li>
+        <li class="nav-item"><a class="nav-link" href="daftarartikel.html">Artikel</a></li>
+        <li class="nav-item"><a class="nav-link" href="todolist.html">To do list</a></li>
+        <li class="nav-item"><a class="nav-link" href="koleksi.html">Koleksi video & audio</a></li>
+        <li class="nav-item"><a class="nav-link" href="kontak.html">Kontak</a></li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+            Paling sering di cari
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="https://pufuta.vercel.app/" target="_self">PufutaraWeb</a></li>
+            <li><a class="dropdown-item" href="https://pufutamuslim.vercel.app/" target="_self">PufutaSound</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="https://pufutaplay.vercel.app/" target="_self">PufutaPlay</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <h1>Perpustakaan Khayalan</h1>
+  <p>Koleksi buku digital bentuk pdf tapi karena males jadi display ajalah.</p>
+</header>
+
+<main class="book-grid">
+
+  <a href="#" class="book-card">
+    <img src="img/coverbuku/negri.jpg" alt="Buku 1">
+    <div class="book-content">
+      <div class="book-meta">Motivasi dan Pendidikan</div>
+      <h3>Negri 5 Menara</h3>
+      <p>Keseharian Alif yang terpaksa masuk Gontor. punya banyak hikmah tentang pendidikan, kesukaan admin.</p>
+    </div>
+  </a>
+
+  <a href="#" class="book-card">
+    <img src="img/coverbuku/ranah.jpg" >
+    <div class="book-content">
+      <div class="book-meta">Motivasi dan Pendidikan</div>
+      <h3>Ranah 3 Warna</h3>
+      <p>Lanjutan negri 5 Menara, Alif jadi penulis koran, udah kuliah dan dapet beasiswa ke kanada dan singapura.</p>
+    </div>
+  </a>
+
+  <a href="#" class="book-card">
+    <img src="img/coverbuku/rantau.jpg" alt="Buku 3">
+    <div class="book-content">
+      <div class="book-meta">Motivasi dan Pendidikan</div>
+      <h3>Rantau 1 Muara</h3>
+      <p>Alif lulus kuliah dan kerja di masa krismon dan reformasi, lalu Aerantau ke amerika dan kerja di pentagon.</p>
+    </div>
+  </a>
+
+  <a href="#" class="book-card">
+    <img src="img/coverbuku/bukansarjana.png" alt="Buku 4">
+    <div class="book-content">
+      <div class="book-meta">Novel</div>
+      <h3>Kami Sarjana Kertas</h3>
+      <p>Kisah yang menceritakan seberapa pentingnya nilai di sebuah kertas ijasah. salah satu buku yang menginspirasi</p>
+    </div>
+  </a>
+
+  <a href="#" class="book-card">
+    <img src="img/coverbuku/bukanjongos.png" alt="Buku 5">
+    <div class="book-content">
+      <div class="book-meta">Novel</div>
+      <h3>Kami Jongos Berdasi</h3>
+      <p>Mungkin lanjutan dari kami bukan sarjana kertas, novel yang bakal jadi bacaan admin selanjutnya...</p>
+    </div>
+  </a>
+
+  <a href="#" class="book-card">
+    <img src="img/coverbuku/sisi.jpg" alt="Buku 6">
+    <div class="book-content">
+      <div class="book-meta">Motivasi dan Pengembangan diri</div>
+      <h3>Sisi Tergelap Surga</h3>
+      <p>Novel berisi cerita2 motivasi dan inspiratif tentang orang2 yang tinggal di pinggiran surga Jakarta.</p>
+    </div>
+  </a>
+
+  <a href="#" class="book-card">
+    <img src="img/coverbuku/seporsi.jpg" alt="Buku 7">
+    <div class="book-content">
+      <div class="book-meta">Motivasi dan prinsip hidup</div>
+      <h3>Seporsi Mie Ayam</h3>
+      <p>Novel kisah ale yang berusaha bunuh diri karena fisik nya yang seperti babi dan kisah motivasi lainnya. </p>
+    </div>
+  </a>
+
+  <a href="#" class="book-card">
+    <img src="img/coverbuku/madilog.jpg" alt="Buku 8">
+    <div class="book-content">
+      <div class="book-meta">Pemikiran dan kebangsaan</div>
+      <h3>Madilog</h3>
+      <p>Salah satu buku pemikiran Tokoh Revolusi Indonesia yang terlupakan, Tan Malaka, ini buku yang paling terkenal.</p>
+    </div>
+  </a>
+
+  <a href="#" class="book-card">
+    <img src="img/coverbuku/bandung.jpg" alt="Buku 9">
+    <div class="book-content">
+      <div class="book-meta">Novel Romansa</div>
+      <h3>Bandung Menjelang Pagi</h3>
+      <p>Entahlah nih novel apa, tapi keknya novel romance, dari namanya, bandung, keknya udah keliatan banget sih.</p>
+    </div>
+  </a>
+
+  <a href="#" class="book-card">
+    <img src="img/coverbuku/matahari.jpg" alt="Buku 10">
+    <div class="book-content">
+      <div class="book-meta">Novel Fantasi</div>
+      <h3>Matahri</h3>
+      <p>Serial Bumi yang ke-3. Menceritakan tentang Selly. keluarga dan klan nya, MATAHARI, novel fantasi bagus rekomen admin.</p>
+    </div>
+  </a>
+
+</main>
+
+
+<div class="page-footer">
+  <a href="index.html">← Kembali ke Beranda</a>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".book-card").forEach((card,i)=>{
+    setTimeout(()=>card.classList.add("muncul"), i*120);
+  });
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

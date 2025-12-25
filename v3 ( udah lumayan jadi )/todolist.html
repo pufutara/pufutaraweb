@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perpustakaan Khayalan | Pufutara Web</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+<style>
+body{
+  font-family:'Inter',sans-serif;
+  background:#fff;
+}
+
+/* NAVBAR */
+.navbar{
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,.85);
+}
+
+/* NAVBAR */
+.navbar{
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.85);
+  animation: navMuncul .8s ease forwards;
+  transform: translateY(-20px);
+  opacity: 0;
+}
+
+@keyframes navMuncul{
+  to{transform:translateY(0);opacity:1}
+}
+
+.navbar-collapse{
+  justify-content: center;
+}
+
+/* HEADER */
+.page-header{
+  text-align:center;
+  padding:90px 10px 40px;
+  opacity:0;
+  transform:translateY(-20px);
+  animation: fadeDown .8s ease forwards;
+}
+@keyframes fadeDown{
+  to{opacity:1;transform:translateY(0)}
+}
+.page-header h1{
+  margin-top: opx;
+  font-family:'Poppins',sans-serif;
+  font-size:3rem;
+  font-weight:700;
+}
+.page-header p{color:#555}
+.page-header::after{
+  content:"";
+  display:block;
+  width:80px;
+  height:1px;
+  margin:10px auto 0;
+  background:linear-gradient(to right,transparent,#aaa,transparent);
+}
+
+.gambarmales{
+  height: auto;
+  width:250px;
+  opacity:.9px;
+}
+
+/*========== ANIMASI GAMBAR ==========================*/
+.gambarmales{
+  width:180px;
+  height:auto;
+  opacity:0;
+  transform:scale(.9);
+  animation: imgMasuk .8s ease forwards;
+  animation-delay:.2s;
+}
+
+@keyframes imgMasuk{
+  to{
+    opacity:.9;
+    transform:scale(1);
+  }
+}
+
+/* JUDUL */
+.page-header h1{
+  margin-top:6px;
+  opacity:0;
+  transform:translateY(10px);
+  animation: textNaik .6s ease forwards;
+  animation-delay:.2s;
+}
+
+/* PARAGRAF */
+.page-header p{
+  opacity:0;
+  transform:translateY(10px);
+  animation: textNaik .6s ease forwards;
+  animation-delay:.4s;
+}
+
+@keyframes textNaik{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+</style>
+</head>
+
+<body>
+  <audio src="audio/notif.wav" autoplay ></audio>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container-fluid">
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+
+        <li class="nav-item"><a class="nav-link active" href="beranda.html">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="perpus.html">Perpustakaan khayalan</a></li>
+        <li class="nav-item"><a class="nav-link" href="daftarartikel.html">Artikel</a></li>
+        <li class="nav-item"><a class="nav-link" href="todolist.html">To do list</a></li>
+        <li class="nav-item"><a class="nav-link" href="koleksi.html">Koleksi video & audio</a></li>
+        <li class="nav-item"><a class="nav-link" href="kontak.html">Kontak</a></li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+            Paling sering di cari
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="https://pufuta.vercel.app/" target="_self">PufutaraWeb</a></li>
+            <li><a class="dropdown-item" href="https://pufutamuslim.vercel.app/" target="_self">PufutaSound</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="https://pufutaplay.vercel.app/" target="_self">PufutaPlay</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <img src="img/makanburger.jpg" alt="Admin capek" class="gambarmales">
+
+  <h1>Blank.</h1>
+  <p>
+    Admin lagi males.<br>
+    Cape ngoding. cape mikirin UI.<br>
+    Ntar dulu, Rebahan dulu.
+  </p>
+</header>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
