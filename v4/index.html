@@ -3,36 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-site-verification" content="_YxoQgBNuxNzKYKEiaHoLDI66XCcw60J59f13hMVXyw" />
-
 <title>Pufutara Web</title>
 <link rel="icon" href="img/kucingjempol.png" type="iconweb">
 
-<!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* Hapus animasi default supaya hero tidak muncul sebelum splash */
+/* ====== BASE ============================================================================================== */
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* ====== SNAP SCROLL ============================================================================================== */
+
+.snap-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.snap-container section {
+  scroll-snap-align: start;
+  padding: 150px 0;
+}
+
+/* ====== SPLASH SCREEN ============================================================================================== */
+
+#splash {
+  position: fixed;
+  inset: 0;
+  background: #111;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+#splash h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#splash button {
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* ==== NAVBAR ======================================================================================================== */
+
+.navbar {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: navMuncul .8s ease forwards;
+}
+
+.navbar-collapse {
+  justify-content: center;
+}
+
+@keyframes navMuncul {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ====== HERO ( JUDUL ) ============================================================================================== */
+
+.isi {
+  display: flex;
+  align-items: center;
+}
+
+.hero {
+  max-width: 1100px;
+  margin: auto;
+  padding: 60px 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 42px;
+}
+
+/* Logo */
+.hero-logo {
+  width: 280px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-logo img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Divider */
+.divider {
+  width: 2px;
+  height: 340px;
+  background: linear-gradient(to bottom, transparent, #ccc, transparent);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.divider.muncul-divider {
+  opacity: 0.8;
+}
+
+/* Text */
 .hero-text h1,
 .hero-text p {
   opacity: 0;
   transform: translateY(25px);
-  /* animation dihapus supaya tidak jalan langsung */
 }
 
-/* Class muncul saat splash selesai */
+.hero-text h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #000, #555);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-text p {
+  margin-top: 20px;
+  max-width: 520px;
+  line-height: 1.7;
+  color: #444;
+}
+
+/* Animasi Hero (trigger setelah splash) */
 .muncul-h1 {
   animation: muncul 1.1s ease forwards;
 }
 
 .muncul-p {
   animation: muncul 1.1s ease forwards;
-  animation-delay: 0.15s;
+  animation-delay: .15s;
 }
 
 @keyframes muncul {
@@ -42,318 +170,36 @@
   }
 }
 
-/* Jika mau divider ikut muncul */
-.divider {
-  opacity: 0;
-  transition: opacity 0.8s ease;
-}
-
-.divider.muncul-divider {
-  opacity: 0.8;
-}
-
-body{
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  height: 100%;
-}
-
-.snap-container{
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-}
-
-.snap-container section{
-  scroll-snap-align: start;
-  padding: 100px 0;
-}
-
-/* Splash screen */
-#splash {
-  position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#111;
-  color:#fff;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-}
-
-#splash h1 {
-  font-family: 'Poppins', sans-serif;
-  font-size:2rem;
-  text-align:center;
-  margin-bottom:20px;
-}
-
-#splash button {
-  padding:12px 24px;
-  font-size:1.2rem;
-  cursor:pointer;
-}
-
-/* NAVBAR */
-.navbar{
-  backdrop-filter: blur(10px);
-  background: rgba(255,255,255,0.85);
-  animation: navMuncul .8s ease forwards;
-  transform: translateY(-20px);
-  opacity: 0;
-}
-
-@keyframes navMuncul{
-  to{transform:translateY(0);opacity:1}
-}
-
-.navbar-collapse{
-  justify-content: center;
-}
-
-body{
-  font-family: 'Inter', sans-serif;
-}
-
-html, body{
-  height: 100%;
-  margin: 0;
-}
-
-.snap-container{
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-}
-
-.snap-container section{
-  scroll-snap-align: start;
-  padding: 100px 0;
-}
-
-.journey,
-.content-overview,
-.purpose,
-.purpose-quote{
-  padding-top: 120px;
-  padding-bottom: 120px;
-}
-
-
-/* NAVBAR */
-.navbar{
-  backdrop-filter: blur(10px);
-  background: rgba(255,255,255,0.85);
-  animation: navMuncul .8s ease forwards;
-  transform: translateY(-20px);
-  opacity: 0;
-}
-
-@keyframes navMuncul{
-  to{transform:translateY(0);opacity:1}
-}
-
-.navbar-collapse{
-  justify-content: center;
-}
-
-/* KONTEN */
-.isi{
-  /* min-height: 100vh; */
-  display: flex;
-  align-items: center;
-}
-
-.hero{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 42px;
-  max-width: 1100px;
-  margin: auto;
-  padding: 0 20px;
-  padding-top: 60px;
-}
-
-/* LOGO */
-.hero-logo{
-  width: 280px;
-  height: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-logo img{
-  max-width: 100%;
-  max-height: 100%;
-}
-
-/* GARIS PEMISAH ESTETIK */
-.divider{
-  width: 2px;
-  height: 340px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    #ccc,
-    transparent
-  );
-  opacity: 0.8;
-}
-
-/* TEKS */
-.hero-text h1{
-  font-family: 'Poppins', sans-serif;
-  font-size: 4rem;
-  font-weight: 700;
-  background: linear-gradient(90deg,#000,#555);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  /* animation: muncul 1.1s ease forwards; */
-  opacity: 0;
-  transform: translateY(25px);
-}
-
-.hero-text p{
-  margin-top: 20px;
-  max-width: 520px;
-  line-height: 1.7;
-  color: #444;
-  /* animation: muncul 1.1s ease forwards; */
-  /* animation-delay: .15s; */
-  opacity: 0;
-  transform: translateY(25px);
-}
-
-@keyframes muncul{
-  to{opacity:1;transform:translateY(0)}
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px){
-  .hero{
+/* Responsive Hero */
+@media (max-width: 768px) {
+  .hero {
     flex-direction: column;
     text-align: center;
   }
 
-  .divider{
+  .divider {
     width: 60%;
     height: 1px;
     margin: 20px 0;
-    background: linear-gradient(
-      to right,
-      transparent,
-      #ccc,
-      transparent
-    );
+    background: linear-gradient(to right, transparent, #ccc, transparent);
   }
 
-  .hero-text h1{
+  .hero-text h1 {
     font-size: 3rem;
   }
 }
 
-/* Animasi hero */
+/* =========SECTION SPACING ============================================================================================ */
 
-.muncul-h1{
-  animation: muncul 1.1s ease forwards;
+.content-overview,
+.purpose,
+.purpose-quote {
+  padding: 120px 0;
 }
 
-.muncul-p{
-  animation: muncul 1.1s ease forwards;
-  animation-delay: .15s;
-}
+/* ======= SCROLL HINT ================================================================================================== */
 
-.divider{
-  opacity: 0;
-}
-
-.divider.muncul-divider{
-  opacity: .8;
-  transition: opacity .8s ease;
-}
-
-
-/* PERJALANAN PUFUTARA WEB */
-.journey{
-  max-width: 1000px;
-  margin: 60px auto 60px;
-  padding: 0 20px;
-  text-align: center;
-}
-
-.journey h2{
-  font-family: 'Poppins', sans-serif;
-  font-size: 2.6rem;
-  padding-top: 10px;
-  margin-bottom: 20px;
-}
-
-.journey-desc{
-  max-width: 700px;
-  margin: 0 auto 50px;
-  color: #555;
-  line-height: 1.7;
-}
-
-/* TIMELINE */
-.timeline{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-  gap: 24px;
-}
-
-.step{
-  padding: 22px;
-  border: 1px solid #e5e5e5;
-  border-radius: 14px;
-  background: #fff;
-  transition: transform .3s ease, box-shadow .3s ease;
-}
-
-.step:hover{
-  transform: translateY(-6px);
-  box-shadow: 0 10px 30px rgba(0,0,0,.08);
-}
-
-.step span{
-  display: block;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: #000;
-}
-
-.step p{
-  font-size: .95rem;
-  color: #555;
-  line-height: 1.6;
-}
-
-/* entahlah */
-
-.tandascroll-text {
-    text-align: center;
-    font-size: .95rem;
-    color: #555;
-}
-
-.tandapanah{
-  width: 14px;
-  height: 14px;
-  border-right: 2px solid #aaa;
-  border-bottom: 2px solid #aaa;
-  transform: rotate(45deg);
-  margin: 40px auto; /* biar di tengah */
-}
-
-.scroll-hint{
+.scroll-hint {
   position: absolute;
   bottom: 40px;
   left: 50%;
@@ -364,53 +210,107 @@ html, body{
   animation: float 2s infinite ease-in-out;
 }
 
-@keyframes float{
-  0%,100%{transform:translate(-50%,0)}
-  50%{transform:translate(-50%,8px)}
+@keyframes float {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, 8px); }
 }
 
+/* ========= PERJALANAN ADMIN ============================================================================================= */
 
-/* APA YANG ADA DI PUFUTARA WEB */
+.journey {
+  max-width: 1000px;
+  margin: 160px auto;
+  padding: 0 20px;
+  padding-top: 400px;
+  text-align: center;
+}
+
+.journey h2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.6rem;
+  margin-bottom: 20px;
+}
+
+.journey-desc {
+  max-width: 900px;
+  margin: 0 auto 50px;
+  color: #555;
+  line-height: 1.7;
+}
+
+/* Timeline */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.step {
+  padding: 22px;
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  background: #fff;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.step:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.step span {
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.step p {
+  font-size: .95rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ======== APA YANG ADA DI ========================================================================================== */
 
 .content-overview h2 {
   padding-top: 00px;
 }
 
-.content-overview{
+.content-overview {
   max-width: 900px;
   margin: 65px auto 100px;
   padding: 0 20px;
   text-align: center;
 }
 
-.content-overview h2{
+.content-overview h2 {
   font-family: 'Poppins', sans-serif;
   font-size: 2.4rem;
   /* margin-bottom: 16px; */
 }
 
-.overview-desc{
+.overview-desc {
   max-width: 650px;
   margin: 0 auto 50px;
   color: #555;
   line-height: 1.7;
 }
 
-.overview-list{
+.overview-list {
   list-style: none;
   padding-top: 5px;
   padding-left: 80px;
   margin: 0;
 }
 
-.overview-list li{
+.overview-list li {
   position: relative;
   padding: 0px 0 20px 20px;
   text-align: left;
   border-left: 1px solid #e0e0e0;
 }
 
-.overview-list li::before{
+.overview-list li::before {
   content: "";
   position: absolute;
   left: -4px;
@@ -421,64 +321,65 @@ html, body{
   border-radius: 30%;
 }
 
-.overview-list li span{
+.overview-list li span {
   font-weight: 600;
   display: block;
   /* margin-bottom: 6px; */
   color: #111;
 }
 
-.overview-list li p{
+.overview-list li p {
   margin: 0;
   color: #555;
   line-height: 1.6;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px){
-  .overview-list li{
+/* ================== RESPONSIVE ================== */
+
+@media (max-width: 768px) {
+  .overview-list li {
     padding-left: 20px;
   }
 }
 
-/* TUJUAN  */
-.purpose{
+/* ========= TUJUAN ================================================================================================== */
+
+.purpose {
   max-width: 900px;
   padding-top: 20px;
   margin: 80px auto 120px;
-  padding: 0 20px;
+  /* padding: 0 20px; */
   text-align: center;
 }
 
-.purpose h2{
+.purpose h2 {
   font-family: 'Poppins', sans-serif;
   padding-top: 50px;
   font-size: 2.4rem;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
-.purpose-desc{
+.purpose-desc {
   max-width: 650px;
   margin: 0 auto 50px;
   color: #555;
   line-height: 1.7;
 }
 
-/*------ TUJUAN PUFUTARA WEB --------------------------------------*/
-.purpose-list{
+.purpose-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.purpose-list li{
+.purpose-list li {
   position: relative;
   padding: 00px 0 20px 10px;
   text-align: left;
   border-left: 1px solid #e0e0e0;
 }
 
-.purpose-list li::before{
+.purpose-list li::before {
   content: "";
   position: absolute;
   left: -4px;
@@ -489,68 +390,57 @@ html, body{
   /* border-radius: 50%; */
 }
 
-.purpose-list li span{
+.purpose-list li span {
   font-weight: 600;
   display: block;
   /* margin-bottom: 6px; */
   color: #111;
 }
 
-.purpose-list li p{
+.purpose-list li p {
   margin: 0;
   color: #555;
   line-height: 1.6;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px){
-  .purpose{
+/* ================== RESPONSIVE ================== */
+
+@media (max-width: 768px) {
+  .purpose {
     margin-bottom: 90px;
   }
 
-  .purpose-list li{
+  .purpose-list li {
     padding-left: 20px;
   }
 }
 
-.purpose{
+/* ======== PURPOSE ( LANJUTAN ) ===============================================================================================*/
+
+.purpose {
   max-width: 900px;
   margin: 120px auto;
   padding: 0 20px;
   text-align: center;
 }
 
-.purpose h2{
+.purpose h2 {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   margin-bottom: 30px;
 }
 
 /* LIST */
+
 .purpose-list li {
   position: relative;
   margin: auto;
   max-width: 650px;
 }
 
-/* GARIS VERTIKAL */
-.purpose-list li ::before{
-  content: "";
-  position: absolute;
-  left: 6px;
-  top: 0;
-  width: 1px;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    #ccc,
-    transparent
-  );
-}
-
 /* ITEM */
-.purpose-list{
+
+.purpose-list {
   position: relative;
   padding-left: 40px;
   /* margin-bottom: 40px; */
@@ -560,110 +450,104 @@ html, body{
   animation: muncul 0.8s ease forwards;
 }
 
-.purpose-item:nth-child(2){animation-delay:.15s}
-.purpose-item:nth-child(3){animation-delay:.3s}
+/* ================== RESPONSIVE ================== */
 
-/* BULAT AKSEN */
-.dot{
-  position: absolute;
-  left: 0;
-  top: 6px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #aaa;
+@media (max-width: 768px) {
+  .purpose {
+    margin-bottom: 90px;
+  }
+
+  .purpose-list li {
+    padding-left: 20px;
+  }
 }
 
 
-/* PURPOSE QUOTE ESTETIK */
-.purpose-quote{
+/* ========= QUOTE AKHIR =================================================================== */
+
+.purpose-quote {
   max-width: 900px;
   margin: 100px auto 140px;
-  padding-top: 50px;
-  padding: 0px 20px;
+  padding: 50px 20px 0;
   text-align: center;
   opacity: 0;
   transform: translateY(30px);
   animation: quoteIn 1.2s ease forwards;
 }
 
-
-@keyframes quoteIn{
-  to{
+@keyframes quoteIn {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* GARIS TIPIS */
-.quote-line{
-  width: 120px;
-  height: 1px;
-  margin: 0 auto 28px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    #aaa,
-    transparent
-  );
-  opacity: 0;
-  animation: lineIn 1s ease forwards;
-}
-
-.quote-line.bottom{
-  margin-top: 28px;
-}
-
-@keyframes lineIn{
-  to{opacity:1}
-}
-
-/*------ 4. QUOTE FOOTER ---------------------------------------------- */
-
-/* QUOTE */
-.purpose-quote blockquote{
+.purpose-quote blockquote {
   font-family: 'Poppins', sans-serif;
   font-size: 2.2rem;
   font-weight: 600;
   line-height: 1.4;
-  margin: 0 0 24px;
-  color: #111;
+  margin-bottom: 24px;
 }
 
-/* TEKS PENJELAS */
-.purpose-quote p{
+.purpose-quote p {
   max-width: 650px;
   margin: 0 auto;
   color: #555;
   line-height: 1.7;
-  font-size: 1rem;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px){
-  .purpose-quote blockquote{
-    font-size: 1.8rem;
-  }
+/* ========= FOOTER ========= */
+
+.footer {
+  margin-top: 150px;
+  background: #111;
+  color: #aaa;
+  padding: 30px 20px 40px;
+  text-align: center;
 }
 
-/* Hero, teks, divider, timeline, etc sama persis dari kode sebelumnya */
-/* ... (untuk singkat, bisa dipakai dari kode kamu sebelumnya) */
+.footer h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 14px;
+}
+
+.footer p {
+  max-width: 600px;
+  margin: 0 auto 20px;
+  font-size: .95rem;
+  line-height: 1.6;
+}
+
+.footer small {
+  display: block;
+  margin-top: 30px;
+  font-size: .8rem;
+  color: #666;
+}
 
 </style>
 </head>
 <body>
 
-<!-- SPLASH SCREEN -->
+<!--====== SPLASH SCREEN ======== -->
+
 <div id="splash" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;display:flex;align-items:center;justify-content:center;z-index:9999;">
   <input id="passwordInput" type="password" 
          style="padding:4px 6px;font-size:.9rem;width:150px;border:1px solid #ccc;border-radius:3px;text-align:center;">
 </div>
-<!--=========================== AUDIO ====================================================  -->
-<audio id="amongus-sound" src="audio/dundundun.mp3"></audio>
 
-<!-- CONTEN UTAMA -->
+<!-- ==== AUDIO ========= -->
+
+<audio id="amongus-sound" src="audio/dundundun.mp3" autoplay></audio>
+
+<!--======== CONTENT UTAMA ======= -->
+
 <div class="snap-container">
-  <!------------ NAVBAR WAK ----------------------------------------------------------------------------------->
+  
+<!-- ========= NAVBAR WAK ========================================================================= -->
 
 <nav class="navbar navbar-expand-lg sticky-top">
   <div class="container-fluid">
@@ -699,9 +583,7 @@ html, body{
   </div>
 </nav>
 
-<div class="snap-container">
-
-  <!---------- JUDUL WOE ---------------------------------------------------------------------------------->
+<!-- ========= HERO ========================================================================= -->
 
 <section class="isi">
   <div class="hero">
@@ -726,7 +608,7 @@ html, body{
   </div>
 </section>
 
-<!-------- PERJUANGAN ADMIN --------------------------------------------------------->
+<!-- ========= PERJUANGAN ADMIN ========================================================================= -->
 
 <section class="journey">
   <h2>Perjalanan Admin Membangun Pufutara Web</h2>
@@ -761,6 +643,8 @@ html, body{
   </div>
 </section>
 
+<!-- ========= INGFOKAN FITUR ========================================================================= -->
+
 <section class="content-overview">
   <h2>Ingfokan Fitur Pufutara Web King</h2>
 
@@ -793,6 +677,8 @@ html, body{
   </ul>
 </section>
 
+<!-- ========= TUJUAN TERSELUBUNG ========================================================================= -->
+
 <section class="purpose">
   <h2>Tujuan Terselubung Pufutara Web</h2>
 
@@ -824,26 +710,41 @@ html, body{
   </ul>
 </section>
 
+<!-- ========= QUOTE ME MUNTAH ========================================================================= -->
+
 <section class="purpose-quote">
   <div class="quote-line top"></div>
 
   <blockquote>
-    “Bukan tentang terlihat hebat,<br>
-    tapi tentang terus bertumbuh.”
+    “Bukan Hanya Untuk Anak Asipa, <br>
+    Tapi Juga Buat Admin Sendiri."
   </blockquote>
 
   <p>
-    Pufutara Web dibuat sebagai ruang belajar dan eksplorasi.
-    Tempat mencoba hal baru, melakukan kesalahan, lalu memperbaikinya.
-    Tidak ada target sempurna, yang ada hanya proses yang terus berjalan.
+    Terkadang hal yang diniatkan dengan tulus iklhas 
+    untuk orang lain kadang bisa berbalik kepada diri kita sendiri,
+    semoga setelah ini putlajam bisa bikin web lebih keren lagi y.
   </p>
 
   <div class="quote-line bottom"></div>
+
+<!-- ========= FOOTER ========================================================================= -->
+
+<footer class="footer">
+  <h3>Pufutara Web</h3>
+
+  <p>
+    Tidak terasa, yang dari awal nya blank page putih kosong sekarang jadi page html rame, dari nyoba ke hobi, dari labkom ke rumah dan dari youtube ke AI.
+  </p>
+
+  <small>
+    © 2025 Putlajam.co — Founder Pufutara Corp.
+  </small>
+</footer>
+
 </section>
 
 </div>
-</div>
-
 
 <script>
 const splash = document.getElementById('splash');
@@ -853,6 +754,8 @@ const passwordInput = document.getElementById('passwordInput');
 const heroH1 = document.querySelector('.hero-text h1');
 const heroP = document.querySelector('.hero-text p');
 const divider = document.querySelector('.divider');
+
+// ============== BAHAYA INI WAK ====================================
 
 const validPasswords = [
   "admin",
@@ -893,7 +796,3 @@ passwordInput.addEventListener('keyup', function(e){
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-
-
-
