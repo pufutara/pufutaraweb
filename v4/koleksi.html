@@ -275,54 +275,27 @@ const audio = document.getElementById("audioPlayer");
 const tracks = [...document.querySelectorAll(".playlist li")];
 const cover = document.querySelector(".gambarmales");
 
-let isAutoplay = true;
-let clickTimer = null;
-let clickCount = 0;
-
-// lagu awal
 audio.src = tracks[0].dataset.src;
 
-// klik playlist
-tracks.forEach(track => {
-  track.addEventListener("click", () => {
-    clickCount++;
+tracks.forEach(track=>{
+  track.onclick=()=>{
+    tracks.forEach(t=>t.classList.remove("active"));
+    track.classList.add("active");
 
-    if (clickCount === 1) {
-      clickTimer = setTimeout(() => {
-        // === SINGLE CLICK ===
-        tracks.forEach(t => t.classList.remove("active"));
-        track.classList.add("active");
+    // Cover animation
+    cover.classList.add("fade");
 
-        cover.classList.add("fade");
-
-        setTimeout(() => {
-          audio.src = track.dataset.src;
-          audio.play();
-          cover.classList.remove("fade");
-        }, 200);
-
-        clickCount = 0;
-      }, 250); // delay buat nunggu double click
-    }
-
-    if (clickCount === 2) {
-      // === DOUBLE CLICK ===
-      clearTimeout(clickTimer);
-      isAutoplay = !isAutoplay;
-
-      console.log("Autoplay:", isAutoplay ? "ON" : "OFF");
-
-      clickCount = 0;
-    }
-  });
+    setTimeout(()=>{
+      audio.src = track.dataset.src;
+      audio.play();
+      cover.classList.remove("fade");
+    },200);
+  }
 });
 
-// lagu habis
-audio.onended = () => {
-  if (!isAutoplay) return;
-
-  const i = tracks.findIndex(t => t.classList.contains("active"));
-  tracks[(i + 1) % tracks.length].click();
+audio.onended=()=>{
+  const i = tracks.findIndex(t=>t.classList.contains("active"));
+  tracks[(i+1)%tracks.length].click();
 };
 </script>
 
@@ -331,6 +304,7 @@ audio.onended = () => {
 
 </body>
 </html>
+
 
 
 
