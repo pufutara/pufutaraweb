@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pufutara Web</title>
 <link rel="icon" href="img/kucingjempol.png" type="iconweb">
+<meta name="description" content="Sebuah website yang tidak mungkin kalian dengar dari medsos, IG apalagi TikTok. tidak salah lagi, kalian pasti yang membaca teks Ini adalah korban pemaksaan putra buat liat websitenya.">
+<meta name="keywords" content="Pufutara, Pufuta, Pufutaraweb, pufuta, pufutara, pufutaraweb">
+<meta name="robots" content="index, follow">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -22,47 +25,6 @@ html, body {
 
 body {
   font-family: 'Inter', sans-serif;
-}
-
-/* ====== SNAP SCROLL ============================================================================================== */
-
-.snap-container {
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-}
-
-.snap-container section {
-  scroll-snap-align: start;
-  padding: 150px 0;
-}
-
-/* ====== SPLASH SCREEN ============================================================================================== */
-
-#splash {
-  position: fixed;
-  inset: 0;
-  background: #111;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-#splash h1 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-#splash button {
-  padding: 12px 24px;
-  font-size: 1.2rem;
-  cursor: pointer;
 }
 
 /* ==== NAVBAR ======================================================================================================== */
@@ -86,7 +48,7 @@ body {
   }
 }
 
-/* ===== HERO SECTION ================================================================================================ */
+/* ====== HERO ( JUDUL ) ============================================================================================== */
 
 .isi {
   display: flex;
@@ -96,7 +58,7 @@ body {
 .hero {
   max-width: 1100px;
   margin: auto;
-  padding: 60px 20px 0;
+  padding: 160px 20px 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,14 +129,6 @@ body {
   }
 }
 
-/* =========SECTION SPACING ============================================================================================ */
-
-.content-overview,
-.purpose,
-.purpose-quote {
-  padding: 120px 0;
-}
-
 /* ======= SCROLL HINT ================================================================================================== */
 
 .scroll-hint {
@@ -196,15 +150,17 @@ body {
 /* ========= PERJALANAN ADMIN ============================================================================================= */
 
 .journey {
-  max-width: 1000px;
-  margin: 160px auto;
+  max-width: 1100px;
+  margin: 100px auto;
   padding: 0 20px;
-  padding-top: 400px;
+  padding-top: 140px;
+  padding-bottom: 50px;
   text-align: center;
 }
 
 .journey h2 {
   font-family: 'Poppins', sans-serif;
+  font-weight: 700;
   font-size: 2.6rem;
   margin-bottom: 20px;
 }
@@ -263,6 +219,7 @@ body {
 
 .content-overview h2 {
   font-family: 'Poppins', sans-serif;
+  font-weight: 700;
   font-size: 2.4rem;
   /* margin-bottom: 16px; */
 }
@@ -333,13 +290,14 @@ body {
 .purpose h2 {
   font-family: 'Poppins', sans-serif;
   padding-top: 50px;
+  font-weight: 700;
   font-size: 2.4rem;
   /* margin-bottom: 10px; */
 }
 
 .purpose-desc {
   max-width: 650px;
-  margin: 0 auto 10px;
+  margin: 0 auto 50px;
   color: #555;
   line-height: 1.7;
 }
@@ -405,7 +363,7 @@ body {
 .purpose h2 {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 
 /* LIST */
@@ -448,22 +406,12 @@ body {
   margin: 100px auto 140px;
   padding: 50px 20px 0;
   text-align: center;
-  opacity: 0;
-  transform: translateY(30px);
-  animation: quoteIn 1.2s ease forwards;
-}
-
-@keyframes quoteIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .purpose-quote blockquote {
   font-family: 'Poppins', sans-serif;
   font-size: 2.2rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.4;
   margin-bottom: 24px;
 }
@@ -487,6 +435,7 @@ body {
 
 .footer h3 {
   font-family: 'Poppins', sans-serif;
+  font-weight: 700px;
   font-size: 1.4rem;
   color: #fff;
   margin-bottom: 14px;
@@ -506,19 +455,50 @@ body {
   color: #666;
 }
 
+/* ===== SCROLL ANIMATION ===== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+  /* transition-delay: 0.5s; */
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 </style>
 </head>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const reveals = document.querySelectorAll(".reveal");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("active");
+      } else {
+        entry.target.classList.remove("active");
+      }
+    });
+  }, {
+    threshold: 0.2
+  });
+
+  reveals.forEach(el => observer.observe(el));
+});
+
+</script>
 
 
 <body>
 
 <!-- ==== AUDIO ========= -->
 
-<audio id="amongus-sound" src="audio/notif.wav" autoplay ></audio>
-
-<!--======== CONTENT UTAMA ======= -->
-
-<div class="snap-container">
+<audio id="amongus-sound" src="audio/dundundun.mp3"></audio>
   
 <!-- ========= NAVBAR WAK ========================================================================= -->
 
@@ -583,33 +563,33 @@ body {
 
 <!-- ========= PERJUANGAN ADMIN ========================================================================= -->
 
-<section class="journey">
+<section class="journey reveal">
   <h2>Perjalanan Admin Membangun Pufutara Web</h2>
 
-  <p class="journey-desc">
+  <p class="journey-desc reveal ">
     Dari rasa gabut gaada game dan tontonan tetap di youtube 
     sampai punya keinginan buat belajar coding gara gara ikut eskul coding.
     dari blank page putih sampe full page modern. bongkar pasang desain
     dan trial-error tanpa henti sampe pala puyeng. ya beginilah sikma.
   </p>
 
-  <div class="timeline">
-    <div class="step">
+  <div class="timeline reveal">
+    <div class="step reveal">
       <span>The Beginning</span>
       <p>Ikut eskul Coding sore, ketagihan sampe lupa waktu sampe jadi pengen bikin website sendiri.</p>
     </div>
 
-    <div class="step">
+    <div class="step reveal">
       <span>Pesiar Pertama</span>
       <p>Kerasukan HTML marathon kelas terbuka sampe ngedeploy pufutaraweb pertamakali.</p>
     </div>
 
-    <div class="step">
+    <div class="step reveal">
       <span>Supporter?!</span>
       <p>Siapa sangka jadi langganan di akses di RB sampe minta nambah lagu?!?!</p>
     </div>
 
-    <div class="step">
+    <div class="step reveal">
       <span>Anomali Coding</span>
       <p>Pennunggu labkom. megang pc buka vscode kalo enggak ya buka chatgpt</p>
     </div>
@@ -618,16 +598,16 @@ body {
 
 <!-- ========= INGFOKAN FITUR ========================================================================= -->
 
-<section class="content-overview">
+<section class="content-overview reveal">
   <h2>Ingfokan Fitur Pufutara Web King</h2>
 
-  <p class="overview-desc">
+  <p class="overview-desc reveal">
     Bukan cuma HTML. Bukan cuma satu halaman.
     Bukan cuma blank page, bukan cuma pufutaraweb
     inilah dia Pufutara Hub. Pusat segala Pufutara Web!.
   </p>
 
-  <ul class="overview-list">
+  <ul class="overview-list  reveal">
     <li>
       <span>PufutaIntegrated</span>
       <p>Menjadi pusat ekosistem pufuta yang menghubungkan segala Entartainment.</p>
@@ -652,10 +632,15 @@ body {
 
 <!-- ========= TUJUAN TERSELUBUNG ========================================================================= -->
 
-<section class="purpose">
+<section class="purpose reveal">
   <h2>Tujuan Terselubung Pufutara Web</h2>
 
-  <ul class="purpose-list">
+  <p class="purpose-desc reveal">
+    Tenang dan santai saja kawan 
+    karena kita seharusnya pasti sudah tahu kan.
+  </p>
+
+  <ul class="purpose-list reveal">
     <li>
       <span>PufutaEntertainment</span>
       <p>Represing buat anak asipa biar gabosen di asrama, ga bosen di labkom.</p>
@@ -680,8 +665,8 @@ body {
 
 <!-- ========= QUOTE ME MUNTAH ========================================================================= -->
 
-<section class="purpose-quote">
-  <div class="quote-line top"></div>
+<section class="purpose-quote reveal">
+  <div class="quote-line top reveal"></div>
 
   <blockquote>
     “Bukan Hanya Untuk Anak Asipa, <br>
@@ -689,9 +674,9 @@ body {
   </blockquote>
 
   <p>
-    Terkadang hal yang diniatkan dengan tulus iklhas 
-    untuk orang lain kadang bisa berbalik kepada diri kita sendiri,
-    semoga setelah ini putlajam bisa bikin web lebih keren lagi y.
+    Yee si admin sok-sokan paling berjasa. yaudah nih udah mau bagian footer nih.
+    Pokoknya jangan lupa tunggu terus updatean website ini, explore terus ni pufutara
+    web karena pasti ada aja easter egg admin iseng. sekian thank youu
   </p>
 
   <div class="quote-line bottom"></div>
@@ -714,6 +699,11 @@ body {
 
 </div>
 
+<!-- Audio -->
+<audio id="amongus-sound" src="audio/dundundun.mp3"></audio>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+
