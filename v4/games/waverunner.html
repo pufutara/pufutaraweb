@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Wave Runner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin: 0;
+  background: #eaeaea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+canvas {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+</style>
+</head>
+<body>
+
+<canvas id="game" width="400" height="600"></canvas>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let x, y;
+let waveDir = -1;
+let holding = false;
+
+let obstacles = [];
+let frame = 0;
+let score = 0;
+let speed = 3;
+
+let gameOver = false;
+let restarting = false;
+
+const waveSpeed = 3;
+const gap = 170;
+
+let highScore = localStorage.getItem("waveHighScore") || 0;
+
+function resetGame() {
+  x = 80;
+  y = canvas.height / 2;
+  waveDir = -1;
+  obstacles = [];
+  frame = 0;
+  score = 0;
+  speed = 3;
+  gameOver = false;
+  restarting = false;
+}
+
+resetGame();
+
+function drawPlayer() {
+  ctx.strokeStyle = "#222";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(x - 8, y - 8);
+  ctx.lineTo(x + 8, y + 8);
+  ctx.stroke();
+}
+
+function spawnObstacle() {
+  const center = 140 + Math.random() * 180;
+  obstacles.push({
+    x: canvas.width,
+    top: center - gap / 2,
+    bottom: center + gap / 2,
+    passed: false
+  });
+}
+
+function updateObstacles() {
+  if (frame % 120 === 0) spawnObstacle();
+
+  obstacles.forEach(o => {
+    o.x -= speed;
+
+    if (!o.passed && o.x + 50 < x) {
+      score++;
+      o.passed = true;
+    }
+
+    if (
+      x > o.x && x < o.x + 50 &&
+      (y < o.top || y > o.bottom)
+    ) endGame();
+  });
+
+  obstacles = obstacles.filter(o => o.x > -60);
+}
+
+function endGame() {
+  if (gameOver) return;
+  gameOver = true;
+
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem("waveHighScore", highScore);
+  }
+
+  if (!restarting) {
+    restarting = true;
+    setTimeout(resetGame, 1000);
+  }
+}
+
+function drawUI() {
+  ctx.fillStyle = "#000";
+  ctx.font = "20px Arial";
+  ctx.fillText("Score: " + score, 20, 40);
+
+  if (gameOver) {
+    ctx.fillStyle = "rgba(255,255,255,0.65)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#000";
+    ctx.font = "32px Arial";
+    ctx.fillText("GAME OVER", canvas.width / 2, 260);
+
+    ctx.font = "18px Arial";
+    ctx.fillText("Score: " + score, canvas.width / 2, 300);
+    ctx.fillText("High Score: " + highScore, canvas.width / 2, 330);
+    ctx.textAlign = "left";
+  }
+}
+
+function update() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // WAVE CONTROL
+  waveDir = holding ? -1 : 1;
+  y += waveDir * waveSpeed;
+
+  if (y < 10 || y > canvas.height - 10) endGame();
+
+  updateObstacles();
+  drawObstacles();
+  drawPlayer();
+  drawUI();
+
+  speed = Math.min(speed + 0.0004, 6);
+  frame++;
+
+  if (!gameOver) requestAnimationFrame(update);
+}
+
+function drawObstacles() {
+  ctx.fillStyle = "#555";
+  obstacles.forEach(o => {
+    ctx.fillRect(o.x, 0, 50, o.top);
+    ctx.fillRect(o.x, o.bottom, 50, canvas.height);
+  });
+}
+
+// INPUT
+document.addEventListener("mousedown", () => holding = true);
+document.addEventListener("mouseup", () => holding = false);
+document.addEventListener("keydown", e => {
+  if (e.code === "Space") holding = true;
+});
+document.addEventListener("keyup", e => {
+  if (e.code === "Space") holding = false;
+});
+canvas.addEventListener("touchstart", () => holding = true);
+canvas.addEventListener("touchend", () => holding = false);
+
+update();
+</script>
+
+</body>
+</html>

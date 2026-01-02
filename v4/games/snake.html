@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Snake Drift</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  background:#f2f2f2;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:Arial,sans-serif;
+}
+canvas{
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+</style>
+</head>
+<body>
+
+<canvas id="game" width="360" height="520"></canvas>
+
+<!-- 🔊 SOUND EFFECT -->
+<audio id="eatSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+<audio id="gameOverSound" src="https://assets.mixkit.co/active_storage/sfx/2691/2691-preview.mp3"></audio>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+const box = 20;
+const cols = canvas.width / box;
+const rows = canvas.height / box;
+
+let snake, food, obstacles, dir;
+let score = 0;
+let highScore = Number(localStorage.getItem("snakeHigh")) || 0;
+let gameOver = false;
+let canRestart = false;
+
+/* RESET */
+function resetGame(){
+  snake = [{x:6,y:10},{x:5,y:10}];
+  dir = "RIGHT";
+  score = 0;
+  food = randomPos();
+  obstacles = createObstacles(8);
+  gameOver = false;
+  canRestart = false;
+  setTimeout(()=>canRestart=true,1000);
+}
+
+/* RANDOM POS */
+function randomPos(){
+  return {
+    x: Math.floor(Math.random()*cols),
+    y: Math.floor(Math.random()*rows)
+  };
+}
+
+/* OBSTACLE */
+function createObstacles(count){
+  let arr = [];
+  for(let i=0;i<count;i++){
+    arr.push(randomPos());
+  }
+  return arr;
+}
+
+/* INPUT */
+document.addEventListener("keydown",e=>{
+  if(gameOver){
+    if(e.code==="Space" && canRestart) resetGame();
+    return;
+  }
+  if(e.key==="ArrowLeft" && dir!=="RIGHT") dir="LEFT";
+  if(e.key==="ArrowUp" && dir!=="DOWN") dir="UP";
+  if(e.key==="ArrowRight" && dir!=="LEFT") dir="RIGHT";
+  if(e.key==="ArrowDown" && dir!=="UP") dir="DOWN";
+});
+
+/* UPDATE */
+function update(){
+  if(gameOver) return;
+
+  let head = {...snake[0]};
+  if(dir==="LEFT") head.x--;
+  if(dir==="RIGHT") head.x++;
+  if(dir==="UP") head.y--;
+  if(dir==="DOWN") head.y++;
+
+  // wall
+  if(head.x<0||head.y<0||head.x>=cols||head.y>=rows) return endGame();
+
+  // self
+  if(snake.some(s=>s.x===head.x&&s.y===head.y)) return endGame();
+
+  // obstacle
+  if(obstacles.some(o=>o.x===head.x&&o.y===head.y)) return endGame();
+
+  // eat
+  if(head.x===food.x && head.y===food.y){
+    score++;
+    food = randomPos();
+    if(score>highScore){
+      highScore=score; 
+      localStorage.setItem("snakeHigh",highScore);
+    }
+  } else {
+    snake.pop();
+  }
+
+  snake.unshift(head);
+}
+
+/* END */
+function endGame(){
+  gameOver = true;
+}
+
+/* DRAW EYES */
+function drawEyes(head){
+  let cx = head.x*box + box/2;
+  let cy = head.y*box + box/2;
+  let ox = 0, oy = 0;
+
+  if(dir==="LEFT") ox=-4;
+  if(dir==="RIGHT") ox=4;
+  if(dir==="UP") oy=-4;
+  if(dir==="DOWN") oy=4;
+
+  ctx.fillStyle="#fff";
+  ctx.beginPath();
+  ctx.arc(cx-4+ox, cy-4+oy, 3, 0, Math.PI*2);
+  ctx.arc(cx+4+ox, cy-4+oy, 3, 0, Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle="#000";
+  ctx.beginPath();
+  ctx.arc(cx-4+ox, cy-4+oy, 1.5, 0, Math.PI*2);
+  ctx.arc(cx+4+ox, cy-4+oy, 1.5, 0, Math.PI*2);
+  ctx.fill();
+}
+
+/* SCENE */
+function drawScene(){
+  // food
+  ctx.beginPath();
+  ctx.arc(food.x*box+box/2,food.y*box+box/2,box/2-2,0,Math.PI*2);
+  ctx.fillStyle="#000";
+  ctx.fill();
+
+  // obstacle
+  ctx.fillStyle="#999";
+  obstacles.forEach(o=>{
+    ctx.fillRect(o.x*box,o.y*box,box,box);
+  });
+
+  // snake
+  snake.forEach((s,i)=>{
+    ctx.fillStyle=i===0?"#111":"#333";
+    ctx.fillRect(s.x*box,s.y*box,box,box);
+    if(i===0) drawEyes(s);
+  });
+
+  // HUD
+  ctx.fillStyle="#000";
+  ctx.font="15px Arial";
+  ctx.fillText("Score: "+score,15,25);
+  ctx.fillText("High: "+highScore,15,45);
+}
+
+/* DRAW */
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  if(gameOver){
+    ctx.save();
+    ctx.filter="blur(6px)";
+    drawScene();
+    ctx.restore();
+
+    ctx.fillStyle="rgba(0,0,0,.25)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle="#fff";
+    ctx.textAlign="center";
+    ctx.font="24px Arial";
+    ctx.fillText("GAME OVER",canvas.width/2,canvas.height/2-40);
+    ctx.font="16px Arial";
+    ctx.fillText("Score: "+score,canvas.width/2,canvas.height/2-10);
+    ctx.fillText("High Score: "+highScore,canvas.width/2,canvas.height/2+15);
+
+    if(canRestart){
+      ctx.font="13px Arial";
+      ctx.fillText("Tekan SPACE untuk restart",canvas.width/2,canvas.height/2+45);
+    }
+    ctx.textAlign="left";
+  } else {
+    drawScene();
+  }
+}
+
+/* LOOP */
+resetGame();
+setInterval(()=>{
+  update();
+  draw();
+},140);
+</script>
+
+</body>
+</html>
