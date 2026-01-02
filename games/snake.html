@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Snake Game - Pufutara</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    margin: 0;
+    background: #eaeaea;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+
+  canvas {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 8px;
+  }
+
+  .btn-close {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    width: 38px;
+    height: 38px;
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 50%;
+    color: #000;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    transition: all 0.2s ease;
+  }
+
+  .btn-close:hover {
+    background: #000;
+    color: #fff;
+    transform: scale(1.05);
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="btn-close" title="Back">✕</a>
+
+<canvas id="game" width="400" height="400"></canvas>
+
+<!-- 🔊 SOUND MAKAN -->
+<audio id="eatSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+const box = 16;
+let snake, food, dir, obstacles;
+let score = 0;
+let highScore = localStorage.getItem("snakeHigh") || 0;
+let gameStarted = false;
+let gameOver = false;
+
+/* RESET GAME */
+function resetGame() {
+  snake = [
+    { x: 10 * box, y: 10 * box },
+    { x: 9 * box, y: 10 * box }
+  ];
+  food = randomFood();
+  obstacles = generateObstacles(6); // 🧱 JUMLAH RINTANGAN
+  dir = "RIGHT";
+  score = 0;
+  gameOver = false;
+}
+
+/* RANDOM FOOD */
+function randomFood() {
+  const cols = canvas.width / box;
+  const rows = canvas.height / box;
+  return {
+    x: Math.floor(Math.random() * cols) * box,
+    y: Math.floor(Math.random() * rows) * box
+  };
+}
+
+/* 🧱 GENERATE RINTANGAN */
+function generateObstacles(count) {
+  const arr = [];
+  const cols = canvas.width / box;
+  const rows = canvas.height / box;
+
+  for (let i = 0; i < count; i++) {
+    arr.push({
+      x: Math.floor(Math.random() * cols) * box,
+      y: Math.floor(Math.random() * rows) * box
+    });
+  }
+  return arr;
+}
+
+/* INPUT */
+document.addEventListener("keydown", e => {
+  if (e.code === "Space") {
+    if (!gameStarted) {
+      gameStarted = true;
+      resetGame();
+    } else if (gameOver) {
+      resetGame();
+    }
+  }
+
+  if (e.key === "ArrowLeft" && dir !== "RIGHT") dir = "LEFT";
+  if (e.key === "ArrowUp" && dir !== "DOWN") dir = "UP";
+  if (e.key === "ArrowRight" && dir !== "LEFT") dir = "RIGHT";
+  if (e.key === "ArrowDown" && dir !== "UP") dir = "DOWN";
+});
+
+/* COLLISION */
+function collision(head, body) {
+  return body.some(seg => head.x === seg.x && head.y === seg.y);
+}
+
+/* DRAW LOOP */
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  /* 🧱 OBSTACLES */
+  ctx.fillStyle = "#000";
+  obstacles.forEach(o => {
+    ctx.fillRect(o.x, o.y, box, box);
+  });
+
+  /* FOOD */
+  ctx.beginPath();
+  ctx.arc(food.x + box/2, food.y + box/2, box/2 - 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  /* SNAKE */
+  snake.forEach((s, i) => {
+    ctx.fillRect(s.x, s.y, box, box);
+
+    if (i === 0) {
+      ctx.fillStyle = "#fff";
+      let eyeSize = 3;
+      let offsetX = 4;
+      let offsetY = 4;
+
+      if (dir === "LEFT") offsetX = 3;
+      if (dir === "RIGHT") offsetX = 9;
+      if (dir === "UP") offsetY = 3;
+      if (dir === "DOWN") offsetY = 9;
+
+      ctx.fillRect(s.x + offsetX, s.y + offsetY, eyeSize, eyeSize);
+      ctx.fillRect(s.x + offsetX, s.y + offsetY + 6, eyeSize, eyeSize);
+      ctx.fillStyle = "#000";
+    }
+  });
+
+  /* SCORE */
+  ctx.font = "16px Arial";
+  ctx.fillText("Score: " + score, 8, 18);
+  ctx.fillText("High: " + highScore, 8, 36);
+
+  ctx.textAlign = "center";
+  if (!gameStarted) {
+    ctx.fillText("Tekan SPACE untuk mulai", canvas.width / 2, canvas.height / 2);
+  } else if (gameOver) {
+    ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 10);
+    ctx.fillText("SPACE untuk ulang", canvas.width / 2, canvas.height / 2 + 12);
+  }
+  ctx.textAlign = "left";
+
+  if (!gameStarted || gameOver) return;
+
+  /* MOVE */
+  let headX = snake[0].x;
+  let headY = snake[0].y;
+
+  if (dir === "LEFT") headX -= box;
+  if (dir === "UP") headY -= box;
+  if (dir === "RIGHT") headX += box;
+  if (dir === "DOWN") headY += box;
+
+  /* EAT */
+  if (headX === food.x && headY === food.y) {
+    score++;
+    document.getElementById("eatSound").currentTime = 0;
+    document.getElementById("eatSound").play();
+    food = randomFood();
+
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem("snakeHigh", highScore);
+    }
+  } else {
+    snake.pop();
+  }
+
+  let newHead = { x: headX, y: headY };
+
+  /* COLLISION CHECK */
+  if (
+    headX < 0 || headY < 0 ||
+    headX >= canvas.width || headY >= canvas.height ||
+    collision(newHead, snake) ||
+    collision(newHead, obstacles)
+  ) {
+    gameOver = true;
+    return;
+  }
+
+  snake.unshift(newHead);
+}
+
+resetGame();
+setInterval(draw, 150);
+</script>
+
+</body>
+</html>

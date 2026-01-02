@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Flappy Bird - Pufutara</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    margin: 0;
+    background: #eaeaea; /* background luar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+
+  canvas {
+    background: #ffffff; /* game putih */
+    border: 3px solid #000; /* garis pembatas */
+    border-radius: 8px;
+  }
+
+  .btn-close {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  width: 38px;
+  height: 38px;
+
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+
+  color: #000;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 999;
+  transition: all 0.2s ease;
+}
+
+.btn-close:hover {
+  background: #000;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+</style>
+</head>
+<body>
+<a href="index.html" class="btn-close" title="Close">✕</a>
+
+
+<canvas id="game" width="320" height="480"></canvas>
+
+<audio id="scoreSound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let gameStarted = false;
+let gameOver = false;
+
+let bird = {
+  x: 60,
+  y: 200,
+  radius: 12,
+  gravity: 0.5,
+  lift: -8,
+  velocity: 0
+};
+
+let pipes = [];
+let frame = 0;
+let score = 0;
+let highScore = localStorage.getItem("highScore") || 0;
+
+const scoreSound = document.getElementById("scoreSound");
+
+function resetGame() {
+  bird.y = 200;
+  bird.velocity = 0;
+  pipes = [];
+  score = 0;
+  frame = 0;
+  gameOver = false;
+}
+
+function drawBird() {
+  ctx.beginPath();
+  ctx.arc(bird.x, bird.y, bird.radius, 0, Math.PI * 2);
+  ctx.fillStyle = "#000"; // burung hitam
+  ctx.fill();
+}
+
+function createPipe() {
+  let gap = 120;
+  let topHeight = Math.random() * 200 + 40;
+  pipes.push({
+    x: canvas.width,
+    top: topHeight,
+    bottom: topHeight + gap,
+    passed: false
+  });
+}
+
+function drawPipes() {
+  ctx.fillStyle = "#000"; // pipa hitam
+  pipes.forEach(p => {
+    ctx.fillRect(p.x, 0, 40, p.top);
+    ctx.fillRect(p.x, p.bottom, 40, canvas.height);
+  });
+}
+
+function updatePipes() {
+  pipes.forEach(p => {
+    p.x -= 2;
+
+    if (!p.passed && p.x + 40 < bird.x) {
+      p.passed = true;
+      score++;
+      scoreSound.currentTime = 0;
+      scoreSound.play();
+
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem("highScore", highScore);
+      }
+    }
+
+    if (
+      bird.x + bird.radius > p.x &&
+      bird.x - bird.radius < p.x + 40 &&
+      (bird.y - bird.radius < p.top || bird.y + bird.radius > p.bottom)
+    ) {
+      gameOver = true;
+    }
+  });
+
+  pipes = pipes.filter(p => p.x > -40);
+}
+
+function drawScore() {
+  ctx.fillStyle = "#000";
+  ctx.font = "18px Arial";
+  ctx.fillText("Score: " + score, 10, 25);
+  ctx.fillText("High: " + highScore, 10, 45);
+}
+
+function drawText() {
+  ctx.fillStyle = "#000";
+  ctx.font = "16px Arial";
+  ctx.textAlign = "center";
+
+  if (!gameStarted) {
+    ctx.fillText("Tekan SPACE untuk mulai", canvas.width / 2, canvas.height / 2);
+  } else if (gameOver) {
+    ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 20);
+    ctx.fillText("Tekan SPACE untuk ulang", canvas.width / 2, canvas.height / 2 + 10);
+  }
+
+  ctx.textAlign = "left";
+}
+
+function update() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (gameStarted && !gameOver) {
+    frame++;
+    bird.velocity += bird.gravity;
+    bird.y += bird.velocity;
+
+    if (frame % 120 === 0) createPipe();
+
+    updatePipes();
+
+    if (bird.y + bird.radius > canvas.height || bird.y - bird.radius < 0) {
+      gameOver = true;
+    }
+  }
+
+  drawPipes();
+  drawBird();
+  drawScore();
+  drawText();
+
+  requestAnimationFrame(update);
+}
+
+document.addEventListener("keydown", e => {
+  if (e.code === "Space") {
+    if (!gameStarted) {
+      gameStarted = true;
+      resetGame();
+    } else if (gameOver) {
+      resetGame();
+    }
+    bird.velocity = bird.lift;
+  }
+});
+
+update();
+</script>
+
+</body>
+</html>
