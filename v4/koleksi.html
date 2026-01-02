@@ -194,6 +194,81 @@ audio::-webkit-media-controls-panel{
   }
 }
 
+  /* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 576px) {
+
+  /* PAGE */
+  .page-header{
+    min-height:auto;
+    padding:24px 0 40px;
+  }
+
+  /* LAYOUT */
+  .layout{
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+
+  /* SIDEBAR → JADI HORIZONTAL */
+  .sidebar-playlist{
+    order:2;
+    overflow-x:auto;
+  }
+
+  .playlist{
+    display:flex;
+    gap:10px;
+    padding-bottom:6px;
+  }
+
+  .playlist li{
+    white-space:nowrap;
+    font-size:.85rem;
+    padding:10px 14px;
+    border-radius:999px;
+    background:#f5f5f5;
+  }
+
+  .playlist li.active{
+    background:#000;
+    color:#fff;
+  }
+
+  /* MAIN CONTENT */
+  .main-content{
+    order:1;
+    padding:0 12px;
+  }
+
+  .gambarmales{
+    width:160px;
+    margin-bottom:10px;
+  }
+
+  .main-content h1{
+    font-size:1.8rem;
+  }
+
+  .main-content p{
+    font-size:.85rem;
+    margin-bottom:14px;
+  }
+
+  /* PLAYER */
+  .player-box{
+    max-width:100%;
+  }
+
+  audio{
+    width:100%;
+  }
+
+  /* NAVBAR */
+  .navbar{
+    backdrop-filter:none;
+  }
+}
+
 </style>
 </head>
 
@@ -248,9 +323,9 @@ audio::-webkit-media-controls-panel{
         <li data-src="audio/music/mejikuhibiniu.mp3">Mejikuhibiniu</li>
         <li data-src="audio/music/kasihaba.mp3">Kasih Aba-Aba</li>
         <li data-src="audio/music/garammadu.mp3">Garam dan Madu</li>
-        <li data-src="audio/lagu8.mp3">08. Deadline Besok</li>
-        <li data-src="audio/lagu9.mp3">09. Rebahan Lagi</li>
-        <li data-src="audio/lagu10.mp3">10. Sleep Mode</li>
+        <li data-src="audio/lagu8.mp3">Kosong</li>
+        <li data-src="audio/lagu9.mp3">Kosong</li>
+        <li data-src="audio/lagu10.mp3">Kosong</li>
       </ul>
     </aside>
 
@@ -319,6 +394,7 @@ audio.onended = () => {
 
 </body>
 </html>
+
 
 
 
